@@ -59,4 +59,5 @@ export default async function middleware(request) {
   }
 
   return Response.redirect(new URL(LOGIN_PATH, request.url), 303);
+
 }
