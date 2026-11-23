@@ -40,6 +40,10 @@ function loginPage(errorMsg = '') {
 export default async function middleware(request) {
   const url = new URL(request.url);
 
+  if (url.pathname === '/logo-am.png') {
+    return;
+  }
+
   if (url.pathname === LOGIN_PATH) {
     if (request.method === 'POST') {
       const form = await request.formData();
