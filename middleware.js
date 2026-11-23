@@ -18,7 +18,7 @@ function loginPage(errorMsg = '') {
 <style>
   body{margin:0;min-height:100vh;display:flex;align-items:center;justify-content:center;background:#f8fafc;font-family:system-ui,sans-serif}
   .box{background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:40px;width:320px;text-align:center;box-shadow:0 4px 24px rgba(0,0,0,.06)}
-  img{height:48px;margin-bottom:20px}
+ img{height:72px;margin-bottom:20px}
   input{width:100%;box-sizing:border-box;padding:10px 12px;border:1px solid #cbd5e1;border-radius:8px;margin:14px 0;font-size:14px}
   button{width:100%;padding:10px;border:none;border-radius:8px;background:#164194;color:#fff;font-weight:600;cursor:pointer}
   .err{color:#dc2626;font-size:13px;margin-bottom:10px}
