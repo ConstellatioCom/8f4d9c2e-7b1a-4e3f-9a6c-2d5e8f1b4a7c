@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Agent Majeur — Audit SEO</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Overpass:wght@400;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#164194;
+    --accent:#164194;
+    --teal:#02a99e;
+    --accent-light:#e9eff8;
+    --text:#1f2937;
+    --text-soft:#64748b;
+    --border:#e2e8f0;
+    --bg:#f8fafc;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:'Overpass',-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--text)}
+  .topbar{display:flex;align-items:center;background:#fff;border-bottom:1px solid var(--border);padding:0 24px;height:56px;position:sticky;top:0;z-index:10}
+  .brand{display:flex;align-items:center;gap:12px;font-weight:700;color:var(--navy);white-space:nowrap;font-size:14.5px}
+  .brand img{height:34px;width:auto;display:block}
+  .brand .sep{width:1px;height:24px;background:var(--border)}
+  .brand .label{color:var(--text-soft);font-weight:600;font-size:13px}
+  .layout{display:flex;min-height:calc(100vh - 56px)}
+  .sidebar{width:240px;background:#fff;border-right:1px solid var(--border);padding:20px 0;flex-shrink:0;display:flex;flex-direction:column}
+  .sidebar-credit{margin-top:auto;padding:14px 20px 4px;font-size:10.5px;color:var(--text-soft)}
+  .sidebar h4{font-size:10.5px;text-transform:uppercase;letter-spacing:.06em;color:var(--text-soft);padding:0 20px;margin:0 0 10px}
+  .side-item{padding:10px 20px;font-size:13.5px;font-weight:500;color:var(--text);cursor:pointer;border-left:3px solid transparent}
+  .side-item.active{background:var(--accent-light);color:var(--accent);border-left-color:var(--accent);font-weight:700}
+  .side-item:hover{background:#f8fafc}
+  .content{flex:1;padding:28px 32px}
+  .panel{display:none}
+  .panel.active{display:block}
+  h1.page-title{font-size:19px;margin:0 0 4px}
+  .page-sub{color:var(--text-soft);font-size:13px;margin:0 0 22px;max-width:660px}
+  .card{background:#fff;border:1px solid var(--border);border-radius:10px;padding:18px 20px;margin-bottom:16px}
+  .card h3{margin:0 0 14px;font-size:14.5px;display:flex;align-items:center;gap:8px}
+  .badge{font-size:10px;font-weight:700;padding:2px 8px;border-radius:999px;background:#e3f7f5;color:var(--teal)}
+  .todo{display:inline-block;font-size:10.5px;font-weight:700;color:#b45309;background:#fef3c7;padding:2px 8px;border-radius:999px;margin-left:4px}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  @media(max-width:720px){.grid2{grid-template-columns:1fr}}
+  .box{border:1px solid var(--border);border-radius:8px;padding:11px 13px}
+  .box.before{background:#fafafa}
+  .box.after{background:var(--accent-light);border-color:#cfe0fd}
+  .box label{display:block;font-size:10px;text-transform:uppercase;letter-spacing:.04em;color:var(--text-soft);margin-bottom:6px;font-weight:700}
+  .box p{margin:0;font-size:13px;line-height:1.5}
+  .charcount{font-size:10.5px;color:var(--text-soft);margin-top:6px}
+  ul.fixlist{margin:0;padding-left:18px;font-size:13px;line-height:1.75}
+  ul.fixlist li{margin-bottom:3px}
+  .tree{font-size:12.5px;line-height:2.05;margin-top:2px}
+  .pill{display:inline-block;min-width:22px;text-align:center;padding:1px 7px;border-radius:999px;font-size:10px;font-weight:700;margin-right:8px;background:#eef1f5;color:var(--text-soft)}
+  .pill.hl{background:var(--accent);color:#fff}
+  .hl-text{color:var(--teal);font-weight:600}
+  .before-note{font-size:12px;color:#b91c1c;background:#fef2f2;border:1px solid #fecaca;border-radius:6px;padding:7px 10px;margin:0 0 8px;display:inline-block}
+  .scopebox{display:flex;gap:12px;flex-wrap:wrap;margin:0 0 18px}
+  .stat{flex:1;min-width:130px;border:1px solid var(--border);border-radius:8px;padding:13px;text-align:center;background:#fff}
+  .stat .num{font-size:21px;font-weight:800;color:var(--navy)}
+  .stat .lbl{font-size:11px;color:var(--text-soft);margin-top:2px}
+  table.excl{width:100%;border-collapse:collapse;font-size:12.5px;margin-top:8px}
+  table.excl th,table.excl td{text-align:left;padding:7px 9px;border-bottom:1px solid var(--border)}
+  table.excl th{color:var(--text-soft);font-weight:600;font-size:10.5px;text-transform:uppercase}
+  .tag{font-size:10.5px;font-weight:700;padding:2px 8px;border-radius:999px}
+  .tag.in{background:#dcfce7;color:#166534}
+  .tag.out{background:#fee2e2;color:#991b1b}
+  .footer-note{font-size:11.5px;color:var(--text-soft);margin-top:24px;border-top:1px solid var(--border);padding-top:14px}
+  .placeholder{font-size:13px;color:var(--text-soft)}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="brand"><img src="logo-am.png" alt="Agent Majeur"><span class="sep"></span><span class="label">Audit agence de communication scientifique</span></div>
+</div>
+
+<div class="layout">
+  <div class="sidebar">
+    <h4>Mission SEO</h4>
+    <div id="sidebarNav"></div>
+    <div class="sidebar-credit">Document produit par Constellatio</div>
+  </div>
+
+  <div class="content">
+
+    <!-- SYNTHESE -->
+    <section class="panel" data-panel="synthese">
+      <h1 class="page-title">Définition de « agence de communication scientifique » et confrontation au cas Agent Majeur</h1>
+      <p class="page-sub">Démarche de définition lexicographique, confrontée au contenu réel du site agentmajeur.fr et à ses particularités.</p>
+
+      <div class="card">
+        <h3>Partie 1 — Démarche</h3>
+        <p style="font-size:13.5px;line-height:1.7">Pour poser des bases solides avant tout travail de mots-clés, une définition de lexicographe du terme « agence de communication scientifique » a d'abord été construite, en mode approfondi avec Claude Sonnet 5. Le point de départ a été une analyse syntaxico-sémantique&nbsp;: dans cette locution, « scientifique » n'est pas un adjectif qualificatif mais un adjectif relationnel, qui ne décrit pas une propriété de l'agence elle-même mais indique un domaine de rattachement.</p>
+        <p style="font-size:13.5px;line-height:1.7">Ce travail a permis de mettre en évidence que cet adjectif relationnel recouvre en réalité trois relations distinctes, non désambiguïsées par la locution figée&nbsp;: l'objet de la communication (on communique sur des contenus scientifiques), le destinataire (on communique vers des publics variés, scientifiques ou non), et l'agent (la communication est produite par des individus liés au monde scientifique).</p>
+        <p style="font-size:13.5px;line-height:1.7">Conformément à la consigne donnée de construire cette définition selon les règles lexicographiques, de ce travail est née une définition unique&nbsp;: <span class="hl-text">une agence de communication scientifique est une entreprise de prestation de services qui conçoit, produit et met en œuvre des stratégies et des supports de communication pour le compte d'acteurs de la recherche, de l'innovation ou de l'industrie, afin de rendre intelligibles, visibles et valorisables des contenus scientifiques, y compris leurs aspects techniques, auprès de publics déterminés tels que financeurs, décideurs, médias, grand public ou pairs.</span></p>
+      </div>
+
+      <div class="card">
+        <h3>Partie 2 — Confrontation au contenu d'Agent Majeur</h3>
+        <p style="font-size:13.5px;line-height:1.7">Cette définition a ensuite été confrontée au contenu réel du site agentmajeur.fr, à la fois sur la page d'accueil, sur la page institutionnelle dédiée à l'agence, et sur l'ensemble du crawl technique du site. Le constat est celui d'une conformité&nbsp;: Agent Majeur se présente et agit bien, sur son volet agence, comme une structure de conseil stratégique, de création de contenus et de supports, et de mise en œuvre d'actions de communication incluant l'événementiel, la production vidéo, le digital et les relations presse, au service d'organismes de recherche, de grandes écoles, d'industriels et d'institutions publiques. Les cibles revendiquées par Agent Majeur, à savoir les financeurs, les médias, les partenaires, les élus ou le grand public, recouvrent exactement celles de la définition générique.</p>
+      </div>
+
+      <div class="card">
+        <h3>Partie 3 — Particularités d'Agent Majeur par rapport à cette pure définition</h3>
+        <p style="font-size:13.5px;line-height:1.7;margin-bottom:12px">Au-delà de cette conformité de principe, plusieurs traits distinguent Agent Majeur d'une agence de communication scientifique générique et sortent du strict périmètre lexical de la définition.</p>
+        <ul class="fixlist" style="line-height:1.8">
+          <li><b>Une équipe issue du monde scientifique.</b> Chez Agent Majeur, ce n'est pas seulement l'agence qui s'adresse à des scientifiques ou qui parle de science&nbsp;: c'est l'équipe elle-même qui est composée, presque intégralement, de docteurs et ingénieurs en biologie moléculaire, physique théorique, biochimie, génétique ou chimie.</li>
+          <li><b>Une ancienneté et un positionnement de pionnier.</b> Agent Majeur se positionne comme une agence pionnière du secteur, fondée en 2008, ce qui lui donne une antériorité et une légitimité historique sur ce marché de niche.</li>
+          <li><b>Une offre bilingue.</b> L'offre est structurée de façon bilingue, avec un site et des contenus dédoublés en français et en anglais, pour une clientèle à dimension internationale.</li>
+          <li><b>Un portefeuille de références prestigieux.</b> Le portefeuille de références est à la fois prestigieux et transversal, mêlant organismes publics de recherche comme le CNRS ou l'Institut Pasteur, grandes écoles, et grands groupes industriels comme Thales, L'Oréal ou TotalEnergies.</li>
+          <li><b>Un argument de retour sur investissement.</b> L'argument de preuve sociale mis en avant n'est pas un indicateur de notoriété classique mais un indicateur de retour sur investissement pour le client, à savoir deux cent cinquante millions d'euros de financements obtenus par les clients grâce aux actions de communication.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- MOTS-CLES -->
+    <section class="panel" data-panel="mots-cles">
+      <h1 class="page-title">Étude de mots-clés</h1>
+      <p class="page-sub">Chiffrage et volumes de recherche sur le mot-clé cible et ses variantes.</p>
+      <div class="card" style="padding:0;overflow:hidden">
+        <div style="padding:18px 20px 12px;display:flex;align-items:baseline;justify-content:space-between;gap:12px">
+          <h3 style="margin:0">Volumétrie — mot-clé cible et variantes</h3>
+          <a href="https://docs.google.com/spreadsheets/d/1to3yqT21SZoxcHtuUYpSGRoJ9ZThRa8Rt4pj0VSKGjY/edit?usp=sharing" target="_blank" rel="noopener" style="font-size:12px;color:var(--text-soft);white-space:nowrap">Ouvrir dans Sheets ↗</a>
+        </div>
+        <iframe src="https://docs.google.com/spreadsheets/d/1to3yqT21SZoxcHtuUYpSGRoJ9ZThRa8Rt4pj0VSKGjY/preview" style="width:100%;height:68vh;border:none;display:block;border-top:1px solid var(--border)"></iframe>
+      </div>
+    </section>
+
+    <!-- PAGES WEB -->
+    <section class="panel" data-panel="pages-web">
+      <h1 class="page-title">Pages web du site</h1>
+      <div class="card" style="padding:0;overflow:hidden">
+        <iframe src="https://docs.google.com/spreadsheets/d/1WXjNFF8mUnDG4OCiIeIU2mbJhnUPimD7qtj8ex39mIE/preview" style="width:100%;height:68vh;border:none;display:block"></iframe>
+      </div>
+    </section>
+
+    <!-- TITRES & META -->
+    <section class="panel" data-panel="titres-meta">
+      <h1 class="page-title">Titres &amp; meta descriptions</h1>
+      <div class="card" style="padding:0;overflow:hidden">
+        <iframe class="airtable-embed" src="https://airtable.com/embed/appuaxXEBLcuVgpG6/shrJokuJ52nOYSv7A?viewControls=on" style="width:100%;height:533px;border:none;display:block"></iframe>
+      </div>
+    </section>
+
+    <!-- HTML SEMANTIQUE -->
+    <section class="panel" data-panel="html-semantique">
+      <h1 class="page-title">HTML sémantique visible</h1>
+      <div class="card" style="padding:0;overflow:hidden">
+        <iframe class="airtable-embed" src="https://airtable.com/embed/appuaxXEBLcuVgpG6/shrIK1uyHjVm7ZsHJ?viewControls=on" style="width:100%;height:533px;border:none;display:block"></iframe>
+      </div>
+    </section>
+
+    <!-- DONNEES STRUCTUREES -->
+    <section class="panel" data-panel="donnees-structurees">
+      <h1 class="page-title">Données structurées Schema.org</h1>
+      <div class="card" style="padding:0;overflow:hidden">
+        <iframe class="airtable-embed" src="https://airtable.com/embed/appuaxXEBLcuVgpG6/shrpwXFBG33W2QWUF?viewControls=on" style="width:100%;height:533px;border:none;display:block"></iframe>
+      </div>
+    </section>
+
+    <!-- PLAN D'ACTION -->
+    <section class="panel" data-panel="plan-action">
+      <h1 class="page-title">Plan d'action</h1>
+      <p class="page-sub">Étapes à mener pour mettre en œuvre les recommandations de cette mission.</p>
+      <div class="card">
+        <ul class="fixlist">
+          <li>Consulter la synthèse et la section mots-clés (optionnel)</li>
+          <li>Consulter les modifications de titres et meta descriptions</li>
+          <li>Consulter les éléments HTML sémantiques visibles</li>
+          <li>Consulter les données structurées Schema.org</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <h3>Notes</h3>
+        <ul class="fixlist">
+          <li>Les modifications proposées sont applicables directement. Seul un changement d'URL demande de la prudence, notamment pour la mise en place de redirections 301 propres.</li>
+          <li>Sur les éléments HTML sémantiques, le changement de niveau de certains titres peut affecter leur apparence visuelle ; cela se résout par un simple ajustement CSS, sans impact sur le contenu.</li>
+          <li>Pour les données structurées Schema.org : ce script est généré automatiquement à partir des balises HTML (title, meta description) de chaque page — les textes s'y mettront donc à jour automatiquement dès que ces balises seront modifiées. Une lacune importante subsiste en revanche sur la propriété <code>sameAs</code> (la liste des réseaux sociaux et profils officiels de l'entreprise) : elle doit être corrigée manuellement sur chaque page, car elle n'est pas répercutée par les modifications de titre/meta.
+            <br>On s'est appuyé sur la liste suivante de points de présence sociaux&nbsp;:
+            <ul style="margin:6px 0 0;padding-left:18px;word-break:break-all">
+              <li><a href="https://www.linkedin.com/company/agent-majeur-agence-de-communication-scientifique/home/" target="_blank" rel="noopener">https://www.linkedin.com/company/agent-majeur-agence-de-communication-scientifique/home/</a></li>
+              <li><a href="https://www.facebook.com/AgentMajeur/" target="_blank" rel="noopener">https://www.facebook.com/AgentMajeur/</a></li>
+              <li><a href="https://www.instagram.com/agentmajeur/" target="_blank" rel="noopener">https://www.instagram.com/agentmajeur/</a></li>
+              <li><a href="https://www.youtube.com/@AgentmajeurFr" target="_blank" rel="noopener">https://www.youtube.com/@AgentmajeurFr</a></li>
+              <li><a href="https://maps.app.goo.gl/rKDvEayz8Cn8kvaE8" target="_blank" rel="noopener">https://maps.app.goo.gl/rKDvEayz8Cn8kvaE8</a></li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+  </div>
+</div>
+
+<script>
+  const sections = [
+    {id:'plan-action', label:"Plan d'action"},
+    {id:'synthese', label:'Synthèse'},
+    {id:'mots-cles', label:'Mots-clés'},
+    {id:'pages-web', label:'Pages web'},
+    {id:'titres-meta', label:'Titres & meta descriptions'},
+    {id:'html-semantique', label:'HTML sémantique visible'},
+    {id:'donnees-structurees', label:'Données structurées Schema.org'}
+  ];
+  const sidebarNav = document.getElementById('sidebarNav');
+
+  sections.forEach((s,i)=>{
+    const side = document.createElement('div');
+    side.className = 'side-item' + (i===0?' active':'');
+    side.textContent = s.label;
+    side.onclick = () => select(s.id);
+    side.dataset.id = s.id;
+    sidebarNav.appendChild(side);
+  });
+
+  function select(id){
+    document.querySelectorAll('.side-item').forEach(el=>el.classList.toggle('active', el.dataset.id===id));
+    document.querySelectorAll('.panel').forEach(el=>el.classList.toggle('active', el.dataset.panel===id));
+  }
+  select('plan-action');
+</script>
+</body>
+</html>
