@@ -48,11 +48,15 @@ export default async function middleware(request) {
     if (request.method === 'POST') {
       const form = await request.formData();
       const password = form.get('password');
-      if (password === process.env.SITE_PASSWORD) {
-        const res = Response.redirect(new URL('/', request.url), 303);
-        res.headers.append('Set-Cookie', `${COOKIE_NAME}=${encodeURIComponent(process.env.SITE_PASSWORD)}; Path=/; HttpOnly; Secure; SameSite=Lax; Max-Age=2592000`);
-        return res;
-      }
+    if (password === process.env.SITE_PASSWORD) {
+  return new Response(null, {
+    status: 303,
+    headers: {
+      'Location': '/',
+      'Set-Cookie': `${COOKIE_NAME}=${encodeURIComponent(process.env.SITE_PASSWORD)}; Path=/; HttpOnly; Secure; SameSite=Lax; Max-Age=2592000`,
+    },
+  });
+}
       return new Response(loginPage('Mot de passe incorrect.'), { status: 401, headers: { 'content-type': 'text/html; charset=utf-8' } });
     }
     return new Response(loginPage(), { headers: { 'content-type': 'text/html; charset=utf-8' } });
